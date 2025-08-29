@@ -1,0 +1,187 @@
+openapi: 3.0.0
+info:
+  title: Report API
+  version: 1.0.0
+  description: API to manage financial reports
+
+servers:
+  - url: http://localhost:8099/api/v1
+
+paths:
+  /reports/commission/product/{id}:
+    get:
+      summary: Get List of all transactions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComissionReport'
+
+  /reports/resume/daily-balance-avg/client/{document}:
+    get:
+      summary: Get List of all transactions
+      parameters:
+        - name: document
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyBalanceAvgReport'
+
+components:
+  schemas:
+    ComissionReport:
+      type: object
+      properties:
+        totalAmount:
+          type: number
+          description: Total comissions charged amount
+        reportDate:
+          type: string
+          format: date-time
+          description: Transaction date
+        product:
+          $ref: '#/components/schemas/Product'
+        comissionsDetail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComissionDetail'
+
+
+    ComissionDetail:
+      type: object
+      properties:
+        transactionNumber:
+          type: integer
+          description: Transaction number
+        amount:
+          type: number
+          description: Amount charged
+        createdDate:
+          type: string
+          format: date-time
+          description: Comission date
+
+    DailyBalanceAvgReport:
+      type: object
+      properties:
+        totalAverage:
+          type: number
+          description: Total daily balance average for all products in current month
+        totalProducts:
+          type: number
+          description: Total number of Client's products
+        reportDate:
+          type: string
+          format: date-time
+          description: Current report Date
+        client:
+          $ref: '#/components/schemas/Client'
+        reportDetail:
+          type: object
+          properties:
+            accounts:
+              type: object
+              properties:
+                accountsAverage:
+                  type: number
+                  description: Total daily accounts' balance average
+                totalAccounts:
+                  type: number
+                  description: Total number of accounts' products
+                products:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductDailyBalanceAvg'
+            credits:
+              type: object
+              properties:
+                creditsAverage:
+                  type: number
+                  description: Total daily credits' balance average
+                totalCredits:
+                  type: number
+                  description: Total number of credits' products
+                products:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductDailyBalanceAvg'
+
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          description: Unique ID
+        type:
+          type: string
+          format: string
+          enum: [savings_account, checking_account, fixed_term_account, personal_credit, business_credit, credit_card]
+          description: Type of product
+        number:
+          type: string
+          format: string
+          description: Number of products if corresponds
+          nullable: true
+    ProductDailyBalanceAvg:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          description: Unique ID
+        type:
+          type: string
+          format: string
+          enum: [savings_account, checking_account, fixed_term_account, personal_credit, business_credit, credit_card]
+          description: Type of product
+        number:
+          type: string
+          format: string
+          description: Number of products if corresponds
+          nullable: true
+        balanceAvg:
+          type: number
+          description: Product's daily balance Average
+
+
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID
+        type:
+          type: string
+          enum: [personal, business]
+          description: Type of Client
+        document:
+          type: string
+          pattern: '^\d{8,11}$'
+          description: Document number (8, 9, or 11 digits)
