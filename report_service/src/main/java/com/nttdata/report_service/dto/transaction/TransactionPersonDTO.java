@@ -8,19 +8,23 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class TransactionPersonDTO {
+    private String id;
     private String document;
     private String fullName;
-    private String signature;
+    private String type;
+
 
     @JsonCreator
     public TransactionPersonDTO(
+            @JsonProperty("id") String id,
             @JsonProperty("document") String document,
-            @JsonProperty("fullName") String fullName,
-            @JsonProperty("signature") String signature
+            @JsonProperty("type") String type,
+            @JsonProperty("fullName") String fullName
     ){
+        this.id = id;
         this.document = document;
+        this.type = type;
         this.fullName = fullName;
-        this.signature = signature;
     }
 
 
