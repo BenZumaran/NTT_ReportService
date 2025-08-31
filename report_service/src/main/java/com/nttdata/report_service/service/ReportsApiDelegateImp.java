@@ -19,7 +19,7 @@ public class ReportsApiDelegateImp implements ReportsApiDelegate {
     ReportService reportService;
 
     @Override
-    public Mono<ResponseEntity<ComissionReport>> reportsCommissionProductIdGet(String id,
+    public Mono<ResponseEntity<CommissionReport>> reportsCommissionProductIdGet(String id,
                                                                        String from,
                                                                        String to,
                                                                        ServerWebExchange exchange){
@@ -49,6 +49,20 @@ public class ReportsApiDelegateImp implements ReportsApiDelegate {
                     log.error("Error {} -> reportsResumeDailyBalanceAvgClientIdGet.", error.getMessage());
                     return Mono.just(new ResponseEntity<>(HttpStatus.NO_CONTENT));
                 });
+    }
+
+    @Override
+    public Mono<ResponseEntity<GeneralProductReport>> reportsResumeProductIdGet(String id,
+                                                                         ServerWebExchange exchange){
+        return reportService.getResumeProductGeneralReport(id)
+                .map(ResponseEntity::ok);
+    }
+
+    @Override
+    public Mono<ResponseEntity<TotalProductsClientReport>> reportsResumeClientIdGet(String id,
+                                                                                    ServerWebExchange exchange){
+        return reportService.getResumeAllClientProductsReport(id)
+                .map(ResponseEntity::ok);
     }
 
 

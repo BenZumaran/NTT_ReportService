@@ -1,17 +1,17 @@
 package com.nttdata.report_service.mapper;
 
 import com.nttdata.report_service.dto.transaction.TransactionResponseDTO;
-import com.nttdata.report_service.model.ComissionDetail;
+import com.nttdata.report_service.model.CommissionDetail;
 
 import java.math.BigDecimal;
 
 public class CommissionDetailMapper {
 
-    public static ComissionDetail getCommissionDetailFromTransactionResponseDto(TransactionResponseDTO transactionResponseDTO){
-        ComissionDetail comissionDetail = new ComissionDetail();
-        comissionDetail.setAmount(BigDecimal.valueOf(transactionResponseDTO.getAmount()));
-        comissionDetail.setCreatedDate(transactionResponseDTO.getCreatedDate());
-        comissionDetail.setTransactionNumber(transactionResponseDTO.getNumber());
-        return  comissionDetail;
+    public static CommissionDetail getCommissionDetailFromTransactionResponseDto(TransactionResponseDTO transactionResponseDTO){
+        CommissionDetail commissionDetail = new CommissionDetail();
+        commissionDetail.setAmount(BigDecimal.valueOf(transactionResponseDTO.getAmount()));
+        commissionDetail.setCreatedDate(transactionResponseDTO.getCreatedDate());
+        commissionDetail.setTransactionNumber(transactionResponseDTO.getNumber());
+        return  commissionDetail;
     }
 }

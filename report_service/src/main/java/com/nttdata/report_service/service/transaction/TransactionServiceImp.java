@@ -20,7 +20,13 @@ public class TransactionServiceImp implements TransactionService{
 
     @Override
     public Flux<TransactionResponseDTO> fetchGetTransactionsList() {
-        return transactionClient.transactionWebClient().get().uri("")
+        return transactionClient.transactionWebClient().get()
+                .retrieve().bodyToFlux(TransactionResponseDTO.class);
+    }
+
+    @Override
+    public Flux<TransactionResponseDTO> fetchGetTransactionsByProductId(String productId) {
+        return transactionClient.transactionWebClient().get().uri("/product/"+productId)
                 .retrieve().bodyToFlux(TransactionResponseDTO.class);
     }
 

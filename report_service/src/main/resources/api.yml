@@ -33,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ComissionReport'
+                $ref: '#/components/schemas/CommissionReport'
 
   /reports/resume/daily-balance-avg/client/{document}:
     get:
@@ -52,39 +52,59 @@ paths:
               schema:
                 $ref: '#/components/schemas/DailyBalanceAvgReport'
 
+  /reports/resume/client/{id}:
+    get:
+      summary: Get Resume of all Client's products By Id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TotalProductsClientReport'
+
+  /reports/resume/product/{id}:
+    get:
+      summary: Get General Resume Certain Product By Id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneralProductReport'
+
 components:
   schemas:
-    ComissionReport:
+    CommissionReport:
       type: object
       properties:
         totalAmount:
           type: number
-          description: Total comissions charged amount
+          description: Total commissions charged amount
         reportDate:
           type: string
           format: date-time
           description: Transaction date
         product:
           $ref: '#/components/schemas/Product'
-        comissionsDetail:
+        commissionsDetail:
           type: array
           items:
-            $ref: '#/components/schemas/ComissionDetail'
+            $ref: '#/components/schemas/CommissionDetail'
 
-
-    ComissionDetail:
-      type: object
-      properties:
-        transactionNumber:
-          type: integer
-          description: Transaction number
-        amount:
-          type: number
-          description: Amount charged
-        createdDate:
-          type: string
-          format: date-time
-          description: Comission date
 
     DailyBalanceAvgReport:
       type: object
@@ -131,6 +151,71 @@ components:
                   items:
                     $ref: '#/components/schemas/ProductDailyBalanceAvg'
 
+    TotalProductsClientReport:
+      type: object
+      properties:
+        totalProducts:
+          type: number
+          description: Total number of Client's products
+        reportDate:
+          type: string
+          format: date-time
+          description: Current report Date
+        client:
+          $ref: '#/components/schemas/Client'
+        reportDetail:
+          type: object
+          properties:
+            accounts:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  description: Total number of accounts' products
+                products:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductDetail'
+            credits:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  description: Total number of credits' products
+                products:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductDetail'
+
+    GeneralProductReport:
+      type: object
+      properties:
+        reportDate:
+          type: string
+          format: date-time
+          description: Transaction date
+        product:
+          $ref: '#/components/schemas/ProductDetail'
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID
+        type:
+          type: string
+          enum: [personal, business]
+          description: Type of Client
+        document:
+          type: string
+          pattern: '^\d{8,11}$'
+          description: Document number (8, 9, or 11 digits)
+
 
     Product:
       type: object
@@ -149,6 +234,7 @@ components:
           format: string
           description: Number of products if corresponds
           nullable: true
+
     ProductDailyBalanceAvg:
       type: object
       properties:
@@ -170,18 +256,74 @@ components:
           type: number
           description: Product's daily balance Average
 
-
-    Client:
+    ProductDetail:
       type: object
       properties:
         id:
           type: string
+          format: string
           description: Unique ID
         type:
           type: string
-          enum: [personal, business]
-          description: Type of Client
-        document:
+          format: string
+          enum: [savings_account, checking_account, fixed_term_account, personal_credit, business_credit, credit_card]
+          description: Type of product
+        balance:
+          type: number
+          description: Product Current Balance
+        number:
           type: string
-          pattern: '^\d{8,11}$'
-          description: Document number (8, 9, or 11 digits)
+          format: string
+          description: Number of products if corresponds
+          nullable: true
+        card:
+          type: string
+          format: string
+          description: Associated Card Number
+          nullable: true
+
+    CommissionDetail:
+      type: object
+      properties:
+        transactionNumber:
+          type: integer
+          description: Transaction number
+        amount:
+          type: number
+          description: Amount charged
+        createdDate:
+          type: string
+          format: date-time
+          description: Commission date
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          description: Transaction unique id
+        number:
+          type: integer
+          description: Transaction number
+        sender:
+          $ref: '#/components/schemas/Product'
+        receiver:
+          $ref: '#/components/schemas/Product'
+        type:
+          type: string
+          format: string
+          description: Type of transaction
+        amount:
+          type: number
+          description: Amount to change according transaction type
+        createdDate:
+          type: string
+          format: date-time
+          description: Transaction date
+        holderDocument:
+          type: string
+          description: Holder Document Number
+        signatoryDocument:
+          type: string
+          description: Signatory Document Number

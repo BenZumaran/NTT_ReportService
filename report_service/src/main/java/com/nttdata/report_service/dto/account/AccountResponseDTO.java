@@ -18,12 +18,14 @@ public class AccountResponseDTO {
     private String accountType;
     private double balance = 0.0;
     private double interestRate = 9.0;
-    private int monthlyMovementLimit = -1;
-    private double maintenanceFee = 0;
-    private int allowedDayOfMonth;
+    private AccountObjectPresentDTO monthlyMovementLimit;
+    private AccountObjectPresentDTO maintenanceFee;
+    private AccountObjectPresentDTO allowedDayOfMonth;
     private LocalDate creationDate = LocalDate.now();
     private boolean active = true;
-    private AccountResponseDTO linkedCard;
+    private AccountCardDTO linkedCard;
+    private double freeTransactionsLimit;
+    private double commissionFee;
 
     @JsonCreator
     public AccountResponseDTO(
@@ -35,12 +37,14 @@ public class AccountResponseDTO {
             @JsonProperty("accountType") String accountType,
             @JsonProperty("balance") double balance,
             @JsonProperty("interestRate") double interestRate,
-            @JsonProperty("monthlyMovementLimit") int monthlyMovementLimit,
-            @JsonProperty("maintenanceFee") double maintenanceFee,
-            @JsonProperty("allowedDayOfMonth") int allowedDayOfMonth,
+            @JsonProperty("monthlyMovementLimit") AccountObjectPresentDTO monthlyMovementLimit,
+            @JsonProperty("maintenanceFee") AccountObjectPresentDTO maintenanceFee,
+            @JsonProperty("allowedDayOfMonth") AccountObjectPresentDTO allowedDayOfMonth,
             @JsonProperty("creationDate") LocalDate creationDate,
             @JsonProperty("active") boolean active,
-            @JsonProperty("linkedCar") AccountResponseDTO linkedCard
+            @JsonProperty("linkedCar") AccountCardDTO linkedCard,
+            @JsonProperty("freeTransactionsLimit") double freeTransactionsLimit,
+            @JsonProperty("commissionFee") double commissionFee
     ) {
          this.id = id;
          this.accountNumber = accountNumber;
@@ -56,28 +60,8 @@ public class AccountResponseDTO {
          this.creationDate = creationDate;
          this.active = active;
          this.linkedCard = linkedCard;
+         this.freeTransactionsLimit = freeTransactionsLimit;
+         this.commissionFee = commissionFee;
     }
 
-    /*
-    {
-  "id": "string",
-  "accountNumber": "string",
-  "interbankNumber": "string",
-  "holderDocument": "string",
-  "authorizedSigners": [
-    "string"
-  ],
-  "accountType": "SAVINGS",
-  "balance": 0,
-  "interestRate": 0,
-  "monthlyMovementLimit": 0,
-  "maintenanceFee": 0,
-  "allowedDayOfMonth": 0,
-  "creationDate": "2025-08-23",
-  "active": true,
-  "linkedCard": {
-    "id": "string"
-  }
-}
-     */
 }

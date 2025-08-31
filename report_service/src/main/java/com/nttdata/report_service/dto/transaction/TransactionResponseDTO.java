@@ -15,6 +15,7 @@ public class TransactionResponseDTO {
     private String id;
     private int number;
     private TransactionProductDTO product;
+    private TransactionProductDTO receiver;
     private String type;
     private TransactionPersonDTO client;
     private TransactionPersonDTO signatory;
@@ -27,6 +28,7 @@ public class TransactionResponseDTO {
             @JsonProperty("id") String id,
             @JsonProperty("number") int number,
             @JsonProperty("sender") TransactionProductDTO product,
+            @JsonProperty("receiver") TransactionProductDTO receiver,
             @JsonProperty("type") String type,
             @JsonProperty("amount") double amount,
             @JsonProperty("createdDate") OffsetDateTime createdDate,
@@ -36,6 +38,7 @@ public class TransactionResponseDTO {
         this.id = id;
         this.number = number;
         this.product = product;
+        this.receiver = receiver;
         this.type = type;
         this.amount = amount;
         this.createdDate = createdDate;
