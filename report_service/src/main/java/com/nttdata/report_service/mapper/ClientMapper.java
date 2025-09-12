@@ -6,7 +6,7 @@ import com.nttdata.report_service.model.Client;
 
 public class ClientMapper {
 
-    public static Client getClientFromTransactionClientDto(TransactionPersonDTO transactionPersonDTO){
+    public static Client getClientFromTransactionClientDto(TransactionPersonDTO transactionPersonDTO) {
         Client client = new Client();
 
         client.setId(transactionPersonDTO.getId());
@@ -16,16 +16,18 @@ public class ClientMapper {
         return client;
     }
 
-    public static Client getClientFromCustomerResponseDto(CustomerResponseDTO customerResponseDTO){
+    public static Client getClientFromCustomerResponseDto(CustomerResponseDTO customerResponseDTO) {
         Client client = new Client();
         client.setId(customerResponseDTO.getId());
-        switch (customerResponseDTO.getType()){
+        switch (customerResponseDTO.getType()) {
             case "PERSONAL":
                 client.setType(Client.TypeEnum.fromValue("personal"));
                 break;
             case "BUSINESS":
                 client.setType(Client.TypeEnum.fromValue("business"));
                 break;
+            default:
+                throw new IllegalArgumentException("Unknown customer type: " + customerResponseDTO.getType());
         }
         client.setDocument(customerResponseDTO.getDocumentNumber());
         return client;

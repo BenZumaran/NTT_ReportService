@@ -2,12 +2,14 @@ package com.nttdata.report_service.dto.transaction;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
+@Builder
 @NoArgsConstructor
 public class TransactionProductDTO {
     private String id;

@@ -3,6 +3,7 @@ package com.nttdata.report_service.dto.transaction;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Data
+@Builder
 @NoArgsConstructor
 public class TransactionResponseDTO {
     private String id;
@@ -30,10 +32,10 @@ public class TransactionResponseDTO {
             @JsonProperty("sender") TransactionProductDTO product,
             @JsonProperty("receiver") TransactionProductDTO receiver,
             @JsonProperty("type") String type,
-            @JsonProperty("amount") double amount,
-            @JsonProperty("createdDate") OffsetDateTime createdDate,
             @JsonProperty("holder") TransactionPersonDTO client,
-            @JsonProperty("signatory") TransactionPersonDTO signatory
+            @JsonProperty("signatory") TransactionPersonDTO signatory,
+            @JsonProperty("amount") double amount,
+            @JsonProperty("createdDate") OffsetDateTime createdDate
     ){
         this.id = id;
         this.number = number;
