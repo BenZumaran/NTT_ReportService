@@ -11,6 +11,8 @@ public interface TransactionService {
 
     Flux<TransactionResponseDTO> fetchGetTransactionsList();
 
+    Flux<TransactionResponseDTO> fetchGetTransactionsByProductId(String productId);
+
     Flux<TransactionResponseDTO> fetchGetTransactionsByClientDocumentBetweenTimeDate(String document, LocalDateTime from, LocalDateTime to);
 
     Flux<TransactionResponseDTO> fetchGetTransactionsByTypeAndProductIdBetweenTimeDate(String type, String productId, LocalDateTime from, LocalDateTime to);

@@ -1,16 +1,13 @@
 package com.nttdata.report_service.service.transaction;
 
-import com.nttdata.report_service.dto.credit.CreditResponseDTO;
 import com.nttdata.report_service.dto.transaction.TransactionResponseDTO;
 import com.nttdata.report_service.repository.TransactionClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Service
 public class TransactionServiceImp implements TransactionService{
@@ -20,7 +17,13 @@ public class TransactionServiceImp implements TransactionService{
 
     @Override
     public Flux<TransactionResponseDTO> fetchGetTransactionsList() {
-        return transactionClient.transactionWebClient().get().uri("")
+        return transactionClient.transactionWebClient().get()
+                .retrieve().bodyToFlux(TransactionResponseDTO.class);
+    }
+
+    @Override
+    public Flux<TransactionResponseDTO> fetchGetTransactionsByProductId(String productId) {
+        return transactionClient.transactionWebClient().get().uri("/product/"+productId)
                 .retrieve().bodyToFlux(TransactionResponseDTO.class);
     }
 

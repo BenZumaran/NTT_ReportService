@@ -4,6 +4,7 @@ import com.nttdata.report_service.dto.credit.CreditResponseDTO;
 import com.nttdata.report_service.repository.CreditClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -14,8 +15,12 @@ public class CreditServiceImp implements CreditService{
 
     @Override
     public Mono<CreditResponseDTO> fetchGetCreditById(String clientId) {
-        return creditClient.creditWebClient().get().uri(clientId)
+        return creditClient.creditWebClient().get().uri("/" + clientId)
                 .retrieve().bodyToMono(CreditResponseDTO.class);
+    }
+
+    public Flux<CreditResponseDTO> fetchGetCredits(){
+        return creditClient.creditWebClient().get().retrieve().bodyToFlux(CreditResponseDTO.class);
     }
 
 }
